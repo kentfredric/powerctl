@@ -1,0 +1,21 @@
+[package]
+name = "powerctrl"
+version = "0.1.0"
+authors = ["Kent Fredric <kentnl@gentoo.org>"]
+edition = "2018"
+
+[[bin]]
+name = "powerctl"
+path = "powerctl/main.rs"
+
+[lib]
+name = "libpowerctl"
+path = "libpowerctl/src/lib.rs"
+
+[profile.release]
+lto = true
+opt-level = 'z'
+codegen-units = 1
+panic = 'abort'
+
+[dependencies]
