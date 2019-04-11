@@ -1,4 +1,5 @@
-use crate::outpairs::OutPairs;
+use crate::{outpairs::OutPairs, Maybe};
+
 use std::{
     fs,
     io::Error,
@@ -9,7 +10,7 @@ pub(super) trait Output {
     fn heading(&self) -> String;
     fn fields(&self) -> Vec<String>;
     fn root(&self) -> PathBuf;
-    fn extras(&self) -> Option<Vec<OutPairs>> { None }
+    fn extras(&self) -> Maybe<Vec<OutPairs>, Error> { Maybe::None }
 
     fn field_values(&self) -> Result<Vec<OutPairs>, Error> {
         let mut out = Vec::new();
@@ -26,10 +27,14 @@ pub(super) trait Output {
             source: self.root().to_owned(),
         });
         children.push(OutPairs::Children(self.field_values()?));
-        if let Some(entries) = self.extras() {
-            for child in entries {
-                children.push(child)
-            }
+        match self.extras() {
+            Maybe::Err(e) => return Err(e),
+            Maybe::Some(entries) => {
+                for child in entries {
+                    children.push(child)
+                }
+            },
+            Maybe::None => (),
         }
         Ok(children)
     }
