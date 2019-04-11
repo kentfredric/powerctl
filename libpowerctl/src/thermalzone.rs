@@ -21,8 +21,8 @@ impl Output for ThermalZone {
         .to_path_buf()
     }
 
-    fn fields(&self) -> &[&str] {
-        &[
+    fn fields(&self) -> Vec<String> {
+        vec![
             "type",
             "available_policies",
             "integral_cutoff",
@@ -40,5 +40,8 @@ impl Output for ThermalZone {
             "trip_point_1_temp",
             "trip_point_1_type",
         ]
+        .iter()
+        .map(|x| x.to_string())
+        .collect()
     }
 }

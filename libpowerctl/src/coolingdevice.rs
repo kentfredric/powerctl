@@ -22,5 +22,10 @@ impl Output for CoolingDevice {
         .to_path_buf()
     }
 
-    fn fields(&self) -> &[&str] { &["type", "cur_state", "max_state"] }
+    fn fields(&self) -> Vec<String> {
+        vec!["type", "cur_state", "max_state"]
+            .iter()
+            .map(|x| x.to_string())
+            .collect()
+    }
 }

@@ -19,8 +19,8 @@ impl Output for HwMon {
             .to_path_buf()
     }
 
-    fn fields(&self) -> &[&str] {
-        &[
+    fn fields(&self) -> Vec<String> {
+        vec![
             "name",
             "temp1_crit",
             "temp1_crit_alarm",
@@ -38,5 +38,8 @@ impl Output for HwMon {
             "temp3_label",
             "temp3_max",
         ]
+        .iter()
+        .map(|x| x.to_string())
+        .collect()
     }
 }
