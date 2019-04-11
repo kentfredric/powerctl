@@ -39,6 +39,7 @@ pub(super) trait Output {
         Ok(children)
     }
 
+    fn field_rename(&self, field: &str) -> String { field.to_owned() }
     fn root_string(&self) -> String { format!("{:?}", self.root()) }
     fn emit_output(&self) -> Result<OutPairs, Error> {
         Ok(OutPairs::Children(self.children()?))
@@ -47,7 +48,7 @@ pub(super) trait Output {
     fn read_pair(&self, path: &Path, name: &str) -> Result<OutPairs, Error> {
         match fs::read_to_string(path) {
             Ok(s) => Ok(OutPairs::Pair {
-                key:   name.to_owned(),
+                key:   self.field_rename(name),
                 value: s.trim_end().to_owned(),
             }),
             Err(e) => Err(e),
