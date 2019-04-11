@@ -24,7 +24,7 @@ pub(super) trait Output {
         let mut children = Vec::new();
         children.push(OutPairs::Heading {
             name:   self.heading().to_owned(),
-            source: self.root().to_owned(),
+            source: self.root_string(),
         });
         children.push(OutPairs::Children(self.field_values()?));
         match self.extras() {
@@ -39,6 +39,7 @@ pub(super) trait Output {
         Ok(children)
     }
 
+    fn root_string(&self) -> String { format!("{:?}", self.root()) }
     fn emit_output(&self) -> Result<OutPairs, Error> {
         Ok(OutPairs::Children(self.children()?))
     }

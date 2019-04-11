@@ -1,13 +1,12 @@
 #[derive(Debug)]
 pub(super) enum OutPairs {
     Pair { key: String, value: String },
-    Heading { name: String, source: PathBuf },
+    Heading { name: String, source: String },
     Children(Vec<OutPairs>),
 }
 
 use std::{
     io::{Error, Write},
-    path::PathBuf,
 };
 use OutPairs::*;
 
@@ -29,7 +28,7 @@ impl OutPairs {
         match self {
             Heading { name, source } => writeln!(
                 buf,
-                "{pad}{name} (via {source:?})",
+                "{pad}{name} (via {source})",
                 pad = pad,
                 name = name,
                 source = source
